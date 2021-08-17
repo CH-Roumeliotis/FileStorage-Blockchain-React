@@ -8,3 +8,5 @@ In this project we have:
 4. IPFS 
 5. Chrome Dev Tools for Debugging our App
 6. Rendering/Upload/Save Files
+
+###Install
