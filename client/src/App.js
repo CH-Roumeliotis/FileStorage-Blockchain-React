@@ -44,7 +44,7 @@ class App extends Component {
   getFiles = async () => {
     try {
       const {accounts, contract} = this.state;
-      //files by address
+      //get files by address
       let fileslength = await contract.methods.getLength().call({from: accounts[0]});
       let files = []
       for(let i = 0; i < fileslength; i++){
@@ -63,10 +63,10 @@ class App extends Component {
       //upload the file to ipfs
       const {contract, accounts} = this.state;
       const stream = fileReaderPullStream(file);
-      const result = await ipfs.add(stream);
+      const result = await ipfs.addNewFile(stream);
       const timestamp = Math.round(+new Date() / 1000);
       const type = file.name.substr(file.name.lastIndexOf(".")+1);
-      let uploaded = await contract.methods.add(result[0].hash, file.name, type, timestamp).send({from: accounts[0], gas: 300000});
+      let uploaded = await contract.methods.addNewFile(result[0].hash, file.name, type, timestamp).send({from: accounts[0], gas: 300000});
       console.log(uploaded);
       this.getFiles();
     } catch (error) {
