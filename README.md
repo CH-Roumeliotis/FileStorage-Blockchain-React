@@ -6,8 +6,7 @@
 2. React App 
 3. Web3 interaction
 4. IPFS 
-5. Chrome Dev Tools for Debugging our App
-6. Rendering/Upload/Save Files
+5. Rendering/Upload/Save Files
 
 > **Installation**
 1. git clone https://github.com/CH-Roumeliotis/FileStorage-Blockchain-React.git
