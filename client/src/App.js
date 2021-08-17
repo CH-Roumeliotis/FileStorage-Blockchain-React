@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./getWeb3";
-import {StyledDropZone} from 'react-drop-zone';
+import {StyledDropZone} from "react-drop-zone";
 import "bootstrap/dist/css/bootstrap.css";
-import {Table} from 'reactstrap';
-import FileIcon, { defaultStyles } from 'react-file-icon';
+import {Table} from "reactstrap";
+import FileIcon, { defaultStyles } from "react-file-icon";
 import "react-drop-zone/dist/styles.css";
-import fileReaderPullStream from 'pull-file-reader';
+import fileReaderPullStream from "pull-file-reader";
+import Moment from "react-moment";
 import "./App.css";
 import ipfs from './ipfs';
 
@@ -32,6 +33,11 @@ class App extends Component {
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
       this.setState({ web3, accounts, contract: instance }, this.getFiles);
+      web3.currentProvider.publicConfigStore.on('update', async () => {
+        const changedAccounts = await web3.eth.getAccounts();
+        this.setState({accounts: changedAccounts});
+        this.getFiles();
+      })
     } catch (error) {
       // Catch any errors for any of the above operations.
       alert(
@@ -45,18 +51,18 @@ class App extends Component {
     try {
       const {accounts, contract} = this.state;
       //get files by address
-      let fileslength = await contract.methods.getLength().call({from: accounts[0]});
-      let files = []
+      let fileslength = await contract.methods.getLength().call({ from: accounts[0] });
+      let files = [];
       for(let i = 0; i < fileslength; i++){
-        let file = await contract.methods.getFile(i).call({from: accounts[0]});
+        let file = await contract.methods.getFile(i).call({ from: accounts[0] });
         files.push(file);
       }
     this.setState({SimpleStorage: files});
-    } catch (error){
+    } catch (error) {
       console.log(error);
     }
     
-  }
+  };
 
   onDrop = async (file) => {
     try {
@@ -72,9 +78,10 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   render() {
+    const {SimpleStorage} = this.state;
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
@@ -85,17 +92,21 @@ class App extends Component {
           <Table>
             <thead>
               <tr>
-                <th width="6%" scope="row">Type</th>
+                <th width="7%" scope="row">Type</th>
                 <th className="text-left">Name</th>
                 <th className="text-right">Date</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th><FileIcon size={30} extension="pdf" {...defaultStyles.pdf}/></th>
-                <th className="text-left">ChrisR.docx</th>
-                <th className="text-right">17/08/2021</th>
-              </tr>
+              {SimpleStorage !== [] ? SimpleStorage.map((item, key)=>(
+                <tr>
+                  <th><FileIcon size={30} extension={item[2]} {...defaultStyles[item[2]]}/></th>
+                  <th className="text-left"><a href={"https://ipfs.io/ipfs/"+item[0]}>{item[1]}</a></th>
+                  <th className="text-right">
+                    <Moment format="YYYY/MM/DD" unix>{item[3]}</Moment>
+                  </th>
+                </tr>
+              )) : null}
             </tbody>
           </Table>
         </div>
