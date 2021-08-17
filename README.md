@@ -9,4 +9,4 @@ In this project we have:
 5. Chrome Dev Tools for Debugging our App
 6. Rendering/Upload/Save Files
 
-##Install
+**Install**
