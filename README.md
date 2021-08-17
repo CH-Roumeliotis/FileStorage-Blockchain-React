@@ -9,7 +9,7 @@ In this project we have:
 5. Chrome Dev Tools for Debugging our App
 6. Rendering/Upload/Save Files
 
-<U>**Installation**</U>
+<b><u>Installation</u></b>
 1. git clone https://github.com/CH-Roumeliotis/FileStorage-Blockchain-React.git
 2. cd FileStorage-Blockchain-react
 3. cd client
