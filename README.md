@@ -10,3 +10,8 @@ In this project we have:
 6. Rendering/Upload/Save Files
 
 **Installation**
+1. git clone https://github.com/CH-Roumeliotis/FileStorage-Blockchain-React.git
+2. cd FileStorage-Blockchain-react
+3. cd client
+4. npm install
+5. npm start
